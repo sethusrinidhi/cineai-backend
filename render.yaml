@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: cineai-backend
+    runtime: docker
+    plan: starter
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/movies
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: CINEAI_JWT_SECRET
+        generateValue: true
+      - key: DB_HOST
+        fromDatabase:
+          name: cineai-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: cineai-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: cineai-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: cineai-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: cineai-db
+          property: password
+
+databases:
+  - name: cineai-db
+    databaseName: cineai_db
+    user: cineai_user
+    plan: basic-256mb
+    region: oregon

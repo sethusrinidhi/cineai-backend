@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: cineai-backend
+  datasource:
+    # Local development uses in-memory H2; Render activates the render profile.
+    url: jdbc:h2:mem:cineai_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# CineAI Application Configuration
+cineai:
+  jwt:
+    secret: ${CINEAI_JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+    expiration-ms: 86400000 # 24 hours
+  seat-lock:
+    timeout-minutes: 5 # ACID Lock auto-release duration (5 minutes)
+  ai-service:
+    url: http://localhost:8000
